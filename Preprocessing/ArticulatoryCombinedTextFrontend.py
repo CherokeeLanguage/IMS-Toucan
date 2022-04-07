@@ -350,11 +350,11 @@ def get_language_id(language: str):
     elif language == "en":
         return torch.LongTensor([12])
     elif language == "chr-w" or language == "chr":
-        return torch.LongTensor([int.from_bytes("chr-w".encode("UTF-8"), byteorder='little')])
+        return torch.LongTensor([13])
     elif language == "chr-e":
-        return torch.LongTensor([int.from_bytes("chr-e".encode("UTF-8"), byteorder='little')])
+        return torch.LongTensor([14])
     # Fallback tensor
-    return torch.LongTensor([int.from_bytes(language.encode("UTF-8"), byteorder='little')])
+    return torch.LongTensor([99])
 
 
 if __name__ == '__main__':
