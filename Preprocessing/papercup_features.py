@@ -532,60 +532,16 @@ def generate_feature_lookup():
             },
 
         # Tone letters: https://en.wikipedia.org/wiki/Tone_letter
-        # Treat falsely as phonemes to let *NN pick them up as modifiers
-        '\u02e5': {  # ◌˥
-            'symbol_type'      : 'phoneme',
-            'vowel_consonant'  : 'vowel',
-            'VUV'              : 'unvoiced',
-            'vowel_frontness'  : 'trill',
-            'vowel_openness'   : 'close-mid',
-            'vowel_roundedness': 'unrounded'
-            },
-        '\u02e6': {  # ◌˦
-                'symbol_type'   : 'phoneme',
-                'vowel_consonant': 'vowel',
-                'VUV': 'unvoiced',
-                'vowel_frontness': 'trill',
-                'vowel_openness': 'close',
-                'vowel_roundedness': 'unrounded'
-        },
-        '\u02e7': {  # ◌˧
-                'symbol_type'   : 'phoneme',
-                'vowel_consonant': 'vowel',
-                'VUV': 'unvoiced',
-                'vowel_frontness': 'trill',
-                'vowel_openness': 'close_close-mid',
-                'vowel_roundedness': 'unrounded'
-        },
-        '\u02e8': {  # ◌˨
-                'symbol_type'   : 'phoneme',
-                'vowel_consonant': 'vowel',
-                'VUV': 'unvoiced',
-                'vowel_frontness': 'trill',
-                'vowel_openness': 'open-mid',
-                'vowel_roundedness': 'unrounded'
-        },
-        '\u02e9': {  # ◌˩
-                'symbol_type'   : 'phoneme',
-                'vowel_consonant': 'vowel',
-                'VUV': 'unvoiced',
-                'vowel_frontness': 'trill',
-                'vowel_openness': 'open-mid_open',
-                'vowel_roundedness': 'unrounded'
-        },
+        '\u02e5': {'symbol_type': 'tone_letter', 'value': 'tone_extra_high' },  # ◌˥
+        '\u02e6': {'symbol_type': 'tone_letter', 'value': 'tone_high' },  # ◌˦
+        '\u02e7': {'symbol_type': 'tone_letter', 'value': 'tone_mid' },  # ◌˧
+        '\u02e8': {'symbol_type': 'tone_letter', 'value': 'tone_low' },  # ◌˨
+        '\u02e9': {'symbol_type': 'tone_letter', 'value': 'tone_extra_low' },  # ◌˩
 
         # Vowel length: https://en.wikipedia.org/wiki/Vowel_length
-        # Treat falsely as phonemes to let *NN pick them up as modifiers
-        '\u02d0': {  # ◌ː
-                'symbol_type'   : 'phoneme',
-                'vowel_consonant': 'vowel',
-                'VUV': 'unvoiced',
-                'vowel_frontness': 'trill',
-                'vowel_openness': 'open',
-                'vowel_roundedness': 'unrounded'
-        },
-        '\u02d1': {'symbol_type': 'silence'},  # ◌ˑ
-        '\u0306': {'symbol_type': 'silence'},  # ◌̆
+        '\u02d0': {'symbol_type': 'vowel_length', 'value': 'vowel_long' },  # ◌ː
+        '\u02d1': {'symbol_type': 'vowel_length', 'value': 'vowel_half_long'},  # ◌ˑ
+        '\u0306': {'symbol_type': 'vowel_length', 'value': 'vowel_extra_short'},  # ◌̆
         }  # REMEMBER to also add the phonemes added here to the ID lookup table in the TextFrontend as the new highest ID
 
 
@@ -658,7 +614,17 @@ def generate_feature_table():
         "questionmark"       : 38,
         "exclamationmark"    : 39,
         "fullstop"           : 40,
-        "alveolopalatal"     : 41
+        "alveolopalatal"     : 41,
+        "tone_letter": 42,
+        "tone_extra_high"    : 43,
+        "tone_high"          : 44,
+        "tone_mid": 45,
+        "tone_low" : 46,
+        "tone_extra_low" : 47,
+        "vowel_length": 48,
+        "vowel_long": 49,
+        "vowel_half_long": 50,
+        "vowel_extra_short": 51
         }
 
     phone_to_vector = dict()

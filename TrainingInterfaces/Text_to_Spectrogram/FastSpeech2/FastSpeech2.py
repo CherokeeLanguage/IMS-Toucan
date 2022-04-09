@@ -18,6 +18,9 @@ from Utility.utils import make_non_pad_mask
 from Utility.utils import make_pad_mask
 
 
+FEATURE_SIZE: int = 76
+
+
 class FastSpeech2(torch.nn.Module, ABC):
     """
     FastSpeech 2 module.
@@ -36,7 +39,7 @@ class FastSpeech2(torch.nn.Module, ABC):
 
     def __init__(self,
                  # network structure related
-                 idim=66,
+                 idim=FEATURE_SIZE,
                  odim=80,
                  adim=384,
                  aheads=4,

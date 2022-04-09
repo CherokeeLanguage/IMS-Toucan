@@ -15,13 +15,16 @@ from Preprocessing.ArticulatoryCombinedTextFrontend import ArticulatoryCombinedT
 from Preprocessing.AudioPreprocessor import AudioPreprocessor
 
 
+FEATURE_SIZE: int = 76
+
+
 class AlignerDataset(Dataset):
 
     def __init__(self,
                  path_to_transcript_dict,
                  cache_dir,
                  lang,
-                 loading_processes=30,  # careful with the amount of processes if you use silence removal, only as many processes as you have cores
+                 loading_processes=1,  # careful with the amount of processes if you use silence removal, only as many processes as you have cores
                  min_len_in_seconds=1,
                  max_len_in_seconds=20,
                  cut_silences=True,
@@ -87,7 +90,7 @@ class AlignerDataset(Dataset):
             pop_indexes = list()
             for index, el in enumerate(self.datapoints):
                 try:
-                    if len(el[0][0]) != 66:
+                    if len(el[0][0]) != FEATURE_SIZE:
                         pop_indexes.append(index)
                 except TypeError:
                     pop_indexes.append(index)
@@ -172,11 +175,11 @@ class AlignerDataset(Dataset):
                 tf.string_to_tensor(transcript, handle_missing=True, input_phonemes=phone_input).squeeze(0).cpu().numpy()
                 continue  # we skip sentences with unknown symbols
             try:
-                if len(cached_text[0]) != 66:
-                    print(f"There seems to be a problem with the following transcription: {transcript}")
+                if len(cached_text[0]) != FEATURE_SIZE:
+                    print(f"There seems to be a problem with the following transcription: {transcript} ({len(cached_text[0])})")
                     continue
             except TypeError:
-                print(f"There seems to be a problem with the following transcription: {transcript}")
+                print(f"There seems to be a problem with the following transcription: {transcript} {type(transcript)}")
                 continue
             cached_text_len = torch.LongTensor([len(cached_text)]).numpy()
             cached_speech = ap.audio_to_mel_spec_tensor(audio=norm_wave, normalize=False, explicit_sampling_rate=16000).transpose(0, 1).cpu().numpy()
