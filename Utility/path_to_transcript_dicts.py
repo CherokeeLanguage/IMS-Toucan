@@ -4,6 +4,8 @@ from typing import Dict
 
 from typing import List
 
+from typing import List
+
 
 def build_path_to_transcript_dict_mls_italian():
     lang = "italian"
@@ -460,13 +462,15 @@ def build_path_to_transcript_dict_3xljspeech():
 
 
 def build_path_transcript_dict_chr_w() -> Dict[str, str]:
-    data_dir: str = "/mount/resources/speech/corpora/cherokee-audio-data/"
     path_to_transcripts: Dict[str, str] = dict()
-    with open(os.path.join(data_dir, "ims-toucan.txt")) as r:
-        for line in r:
-            line = line.strip()
-            parts: List[str] = line.split("|")
-            wav: str = os.path.join(data_dir, parts[0])
-            text: str = parts[1]
-            path_to_transcripts[wav] = text
+    data_dirs: List[str] = ["/mount/resources/speech/corpora/cherokee-audio-data",
+                            "/mount/resources/speech/corpora/cherokee-audio-data-private"]
+    for data_dir in data_dirs:
+        with open(os.path.join(data_dir, "ims-toucan.txt")) as r:
+            for line in r:
+                line = line.strip()
+                parts: List[str] = line.split("|")
+                wav: str = os.path.join(data_dir, parts[0])
+                text: str = parts[1]
+                path_to_transcripts[wav] = text
     return path_to_transcripts
