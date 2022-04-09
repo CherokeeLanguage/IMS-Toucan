@@ -466,7 +466,10 @@ def build_path_transcript_dict_chr_w() -> Dict[str, str]:
     data_dirs: List[str] = ["/mount/resources/speech/corpora/cherokee-audio-data",
                             "/mount/resources/speech/corpora/cherokee-audio-data-private"]
     for data_dir in data_dirs:
-        with open(os.path.join(data_dir, "ims-toucan.txt")) as r:
+        ims_toucan_data: str = os.path.join(data_dir, "ims-toucan.txt")
+        if not os.path.isfile(ims_toucan_data):
+            continue
+        with open(ims_toucan_data) as r:
             for line in r:
                 line = line.strip()
                 parts: List[str] = line.split("|")
