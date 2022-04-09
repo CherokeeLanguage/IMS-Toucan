@@ -532,16 +532,58 @@ def generate_feature_lookup():
             },
 
         # Tone letters: https://en.wikipedia.org/wiki/Tone_letter
-        # Treat as silence to let *NN pick them up as modifiers
-        '\u02e5': {'symbol_type': 'silence'},  # ◌˥
-        '\u02e6': {'symbol_type': 'silence'},  # ◌˦
-        '\u02e7': {'symbol_type': 'silence'},  # ◌˧
-        '\u02e8': {'symbol_type': 'silence'},  # ◌˨
-        '\u02e9': {'symbol_type': 'silence'},  # ◌˩
+        # Treat falsely as phonemes to let *NN pick them up as modifiers
+        '\u02e5': {  # ◌˥
+            'symbol_type'      : 'phoneme',
+            'vowel_consonant'  : 'vowel',
+            'VUV'              : 'unvoiced',
+            'vowel_frontness'  : 'trill',
+            'vowel_openness'   : 'close-mid',
+            'vowel_roundedness': 'unrounded'
+            },
+        '\u02e6': {  # ◌˦
+                'symbol_type'   : 'phoneme',
+                'vowel_consonant': 'vowel',
+                'VUV': 'unvoiced',
+                'vowel_frontness': 'trill',
+                'vowel_openness': 'close',
+                'vowel_roundedness': 'unrounded'
+        },
+        '\u02e7': {  # ◌˧
+                'symbol_type'   : 'phoneme',
+                'vowel_consonant': 'vowel',
+                'VUV': 'unvoiced',
+                'vowel_frontness': 'trill',
+                'vowel_openness': 'close_close-mid',
+                'vowel_roundedness': 'unrounded'
+        },
+        '\u02e8': {  # ◌˨
+                'symbol_type'   : 'phoneme',
+                'vowel_consonant': 'vowel',
+                'VUV': 'unvoiced',
+                'vowel_frontness': 'trill',
+                'vowel_openness': 'open-mid',
+                'vowel_roundedness': 'unrounded'
+        },
+        '\u02e9': {  # ◌˩
+                'symbol_type'   : 'phoneme',
+                'vowel_consonant': 'vowel',
+                'VUV': 'unvoiced',
+                'vowel_frontness': 'trill',
+                'vowel_openness': 'open-mid_open',
+                'vowel_roundedness': 'unrounded'
+        },
 
         # Vowel length: https://en.wikipedia.org/wiki/Vowel_length
-        # Treat as silence to let *NN pick them up as modifiers
-        '\u02d0': {'symbol_type': 'silence'},  # ◌ː
+        # Treat falsely as phonemes to let *NN pick them up as modifiers
+        '\u02d0': {  # ◌ː
+                'symbol_type'   : 'phoneme',
+                'vowel_consonant': 'vowel',
+                'VUV': 'unvoiced',
+                'vowel_frontness': 'trill',
+                'vowel_openness': 'open',
+                'vowel_roundedness': 'unrounded'
+        },
         '\u02d1': {'symbol_type': 'silence'},  # ◌ˑ
         '\u0306': {'symbol_type': 'silence'},  # ◌̆
         }  # REMEMBER to also add the phonemes added here to the ID lookup table in the TextFrontend as the new highest ID
