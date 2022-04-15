@@ -25,7 +25,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     torch.random.manual_seed(131714)
 
     print("Preparing")
-    langs: List[str] = ["de", "en", "fr", "nl", "ru", "zh", "chr"]
+    langs: List[str] = ["de", "en", "fr", "nl", "ru", "chr"]
     source_base: str = "/mount/resources/speech/corpora"
     # Non Cherokee before Cherokee to get better quality voice weights as the default for the model
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
@@ -36,6 +36,8 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
             toucan_file = os.path.join(source_base, source, f"ims-toucan-{lang}.txt")
             corpus_dir = os.path.join("Corpora", f"aligner-{source}-{lang}")
             path_to_transcript_dict: Dict[str, str] = dict()
+            if not os.path.exists(toucan_file):
+                continue
             with open(toucan_file, "r") as r:
                 for line in r:
                     line = line.strip()
