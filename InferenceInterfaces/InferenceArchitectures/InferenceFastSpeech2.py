@@ -11,7 +11,7 @@ from Utility.utils import make_non_pad_mask
 from Utility.utils import make_pad_mask
 
 
-FEATURE_SIZE: int =76
+FEATURE_SIZE: int = 88
 
 
 class FastSpeech2(torch.nn.Module, ABC):

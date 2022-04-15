@@ -7,8 +7,8 @@ from TrainingInterfaces.Text_to_Spectrogram.FastSpeech2.FastSpeechDatasetLanguag
 from Utility.path_to_transcript_dicts import *
 
 
-def prepare_aligner_corpus(transcript_dict, corpus_dir, lang, device):
-    return AlignerDataset(transcript_dict, cache_dir=corpus_dir, lang=lang, loading_processes=35, cut_silences=True, device=device)
+def prepare_aligner_corpus(transcript_dict, corpus_dir, lang, device, loading_processes: int = 35):
+    return AlignerDataset(transcript_dict, cache_dir=corpus_dir, lang=lang, loading_processes=loading_processes, cut_silences=True, device=device)
 
 
 def prepare_fastspeech_corpus(transcript_dict, corpus_dir, lang, ctc_selection=True, fine_tune_aligner=True, use_reconstruction=False, phone_input=False):

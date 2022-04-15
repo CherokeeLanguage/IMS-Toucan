@@ -43,7 +43,7 @@ def build_path_to_transcript_dict_mls_portuguese():
     return build_path_to_transcript_dict_multi_ling_librispeech_template(root=root)
 
 
-def build_path_to_transcript_dict_multi_ling_librispeech_template(root):
+def build_path_to_transcript_dict_multi_ling_librispeech_template(root) -> Dict[str, str]:
     """
     https://arxiv.org/abs/2012.03411
     """

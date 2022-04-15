@@ -21,7 +21,7 @@ class ArticulatoryCombinedTextFrontend:
                  # phonemes hurts the performance of end-to-end models a
                  # lot, even though one might think enriching the input
                  # with such information would help.
-                 use_lexical_stress=False,
+                 use_lexical_stress=True,
                  silent=True,
                  allow_unknown=False,
                  add_silence_to_end=True,
@@ -230,6 +230,21 @@ class ArticulatoryCombinedTextFrontend:
             '\u02d0': 81,  # ◌ː
             '\u02d1': 82,  # ◌ˑ
             '\u0306': 83,  # ◌̆
+            # Stress impacts things like compound noun formation, dessert vs desert,
+            # among other things
+            '\u02c8': 84,  # ˈ (primary) stress mark
+            '\u02cc': 85,  # ˌ secondary stress
+            # for use by Russian, among other languages
+            # see also: https://www.phon.ucl.ac.uk/home/wells/ipa-unicode.htm
+            '\u02bc': 86,
+            '\u02b4': 87,
+            '\u02b0': 88,
+            '\u02b1': 89,
+            '\u02b7': 90,
+            '\u02e0': 91,
+            '\u02e4': 92,
+            '\u02de': 93,
+
             }  # for the states of the ctc loss and dijkstra/mas in the aligner
 
         self.id_to_phone = {v: k for k, v in self.phone_to_id.items()}

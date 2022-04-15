@@ -15,7 +15,7 @@ from Preprocessing.ArticulatoryCombinedTextFrontend import ArticulatoryCombinedT
 from Preprocessing.AudioPreprocessor import AudioPreprocessor
 
 
-FEATURE_SIZE: int = 76
+FEATURE_SIZE: int = 88
 
 
 class AlignerDataset(Dataset):

@@ -576,6 +576,49 @@ def generate_feature_lookup():
                     'symbol_type': 'vowel_length',
                     'value'      : 'vowel_extra_short'
             },  # ◌̆
+            # Stress impacts things like compound noun formation, dessert vs desert,
+            # among other things
+            '\u02c8': {
+                    'symbol_type': 'stress',
+                    'value'      : 'primary'
+            },
+            '\u02cc': {
+                    'symbol_type': 'stress',
+                    'value'      : 'secondary'
+            }, # for use by Russian, among other languages
+            # see also: https://www.phon.ucl.ac.uk/home/wells/ipa-unicode.htm
+            '\u02bc': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02bc'
+            },
+            '\u02b4': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02b4'
+            },
+            '\u02b0': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02b0'
+            },
+            '\u02b1': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02b1'
+            },
+            '\u02b7': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02b7'
+            },
+            '\u02e0': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02e0'
+            },
+            '\u02e4': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02e4'
+            },
+            '\u02de': {
+                    'symbol_type': 'symbol',
+                    'symbol': '\u02de'
+            },
     }  # REMEMBER to also add the phonemes added here to the ID lookup table in the TextFrontend as the new highest ID
 
 
@@ -658,7 +701,19 @@ def generate_feature_table():
             "vowel_length"       : 48,
             "vowel_long"         : 49,
             "vowel_half_long"    : 50,
-            "vowel_extra_short"  : 51
+            "vowel_extra_short"  : 51,
+            'stress'             : 52,
+            'primary'            : 53,
+            'secondary'          : 54,
+            'symbol'             : 55,
+            '\u02bc'             : 56,
+            '\u02b4'             : 57,
+            '\u02b0'             : 58,
+            '\u02b1'             : 59,
+            '\u02b7'             : 60,
+            '\u02e0'             : 61,
+            '\u02e4'             : 62,
+            '\u02de'             : 63
     }
 
     phone_to_vector = dict()
