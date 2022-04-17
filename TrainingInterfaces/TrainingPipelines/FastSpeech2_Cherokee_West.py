@@ -1,5 +1,6 @@
 import os
 import random
+from typing import Dict
 from typing import List
 from typing import Tuple
 
@@ -39,11 +40,11 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
     datasets = list()
 
-    for source in sources:
-        for lang in langs:
+    for lang in langs:
+        corpus_dir = os.path.join("Corpora", f"tts-{lang}")
+        path_to_transcript_dict: Dict[str, str] = dict()
+        for source in sources:
             toucan_file = os.path.join(source_base, source, f"ims-toucan-{lang}.txt")
-            corpus_dir = os.path.join("Corpora", f"tts-{source}-{lang}")
-            path_to_transcript_dict: Dict[str, str] = dict()
             if not os.path.exists(toucan_file):
                 continue
             with open(toucan_file, "r") as r:
@@ -54,14 +55,14 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
                     wav = os.path.join(source_base, source, parts[0])
                     wav = os.path.realpath(wav)
                     path_to_transcript_dict[wav] = transcript
-            max_size: int = min(10_000, len(path_to_transcript_dict))
-            items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
-            subset = dict(random.sample(items, max_size))
-            datasets.append(prepare_aligner_corpus(transcript_dict=subset,
-                                                   corpus_dir=corpus_dir,
-                                                   lang=lang,
-                                                   device=device,
-                                                   loading_processes=1))
+        max_size: int = min(10_000, len(path_to_transcript_dict))
+        items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
+        subset = dict(random.sample(items, max_size))
+        datasets.append(prepare_aligner_corpus(transcript_dict=subset,
+                                               corpus_dir=corpus_dir,
+                                               lang=lang,
+                                               device=device,
+                                               loading_processes=1))
     print("Training model")
     train_loop(net=FastSpeech2(lang_embs=100),
                device=torch.device("cuda"),

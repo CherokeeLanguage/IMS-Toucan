@@ -48,8 +48,8 @@ def train_loop(net,
                                         collate_fn=collate_and_pad,
                                         persistent_workers=True))
         train_iters.append(iter(train_loaders[-1]))
-    default_embeddings = {"en": None, "de": None, "el": None, "es": None, "fi": None, "ru": None, "hu": None, "nl": None, "fr": None, "chr": None}
-    for index, lang in enumerate(["en", "de", "el", "es", "fi", "ru", "hu", "nl", "fr", "chr"]):
+    default_embeddings = {}
+    for index, lang in enumerate(["de", "en", "fr", "nl", "ru", "chr"]):
         default_embeddings[lang] = datasets[index][0][7].squeeze().to(device)
     optimizer = torch.optim.RAdam(net.parameters(), lr=lr, eps=1.0e-06, weight_decay=0.0)
     grad_scaler = GradScaler()
