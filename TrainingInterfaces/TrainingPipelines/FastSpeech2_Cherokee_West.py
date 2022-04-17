@@ -11,7 +11,7 @@ from Utility.corpus_preparation import prepare_fastspeech_corpus
 from Utility.path_to_transcript_dicts import *
 
 
-def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_samples=False):
+def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_samples=True):
     torch.manual_seed(131714)
     random.seed(131714)
     torch.random.manual_seed(131714)
