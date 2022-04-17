@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import warnings
@@ -21,4 +22,7 @@ if __name__ == '__main__':
         text = input("\nWhat should I say? (or 'exit')\n")
         if text == "exit":
             sys.exit()
-        tts.read_aloud(text, view=True, blocking=False)
+        tts.read_aloud(text, view=True, blocking=True)
+        file_location = f"{int(datetime.datetime.today().timestamp() * 1000)}.wav"
+        tts.read_to_file([text], file_location)
+
