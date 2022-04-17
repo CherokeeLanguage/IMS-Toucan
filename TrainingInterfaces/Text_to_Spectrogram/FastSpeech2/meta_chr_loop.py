@@ -49,7 +49,8 @@ def train_loop(net,
                                         persistent_workers=True))
         train_iters.append(iter(train_loaders[-1]))
     default_embeddings = {}
-    for index, lang in enumerate(["de", "en", "fr", "nl", "ru", "chr"]):
+    langs: List[str] = ["en", "de", "fr", "nl", "ru", "chr"]
+    for index, lang in enumerate(langs):
         default_embeddings[lang] = datasets[index][0][7].squeeze().to(device)
     optimizer = torch.optim.RAdam(net.parameters(), lr=lr, eps=1.0e-06, weight_decay=0.0)
     grad_scaler = GradScaler()
@@ -133,7 +134,7 @@ def train_loop(net,
                 },
                 os.path.join(save_directory, "checkpoint_{}.pt".format(step)))
             delete_old_checkpoints(save_directory, keep=5)
-            for lang in ["en", "de", "el", "es", "fi", "ru", "hu", "nl", "fr"]:
+            for lang in langs:
                 plot_progress_spec(net=net,
                                    device=device,
                                    lang=lang,
