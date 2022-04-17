@@ -66,5 +66,8 @@ if __name__ == '__main__':
             "Fine-tuning for HiFiGAN is not implemented as it didn't seem necessary. Should generalize across speakers without fine-tuning.")
         sys.exit()
 
-    pipeline_dict[args.pipeline](gpu_id=args.gpu_id, resume_checkpoint=args.resume_checkpoint, resume=args.resume,
-                                 finetune=args.finetune, model_dir=args.model_save_dir)
+    pipeline_dict[args.pipeline](gpu_id=args.gpu_id,  #
+                                 resume_checkpoint=args.resume_checkpoint,  #
+                                 resume=args.resume,  #
+                                 finetune=args.finetune,  #
+                                 model_dir=args.model_save_dir)
