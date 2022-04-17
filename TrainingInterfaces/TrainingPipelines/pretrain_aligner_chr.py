@@ -64,7 +64,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     train_aligner(train_dataset=train_set,
                   device=device,
                   save_directory=save_dir,
-                  steps=500000,
+                  steps=500_000,
                   batch_size=32,
                   path_to_checkpoint=resume_checkpoint,
                   fine_tune=finetune,
