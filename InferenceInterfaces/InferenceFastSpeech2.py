@@ -135,7 +135,9 @@ class InferenceFastSpeech2(torch.nn.Module):
                     wav = self(text, durations=durations, pitch=pitch, energy=energy).cpu()
                     wav = torch.cat((wav, silence), 0)
                 else:
-                    wav = torch.cat((wav, self(text, durations=durations.to(self.device), pitch=pitch.to(self.device), energy=energy.to(self.device)).cpu()), 0)
+                    wav = torch.cat((wav, self(text, durations=durations,  #
+                                               pitch=pitch,  #
+                                               energy=energy).cpu()), 0)
                     wav = torch.cat((wav, silence), 0)
         soundfile.write(file=file_location, data=wav.cpu().numpy(), samplerate=48000)
 
