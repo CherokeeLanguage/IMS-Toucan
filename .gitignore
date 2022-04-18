@@ -19,3 +19,4 @@ pretrained_models/
 split/
 singing/
 *.egg-info/
+aligner.pt

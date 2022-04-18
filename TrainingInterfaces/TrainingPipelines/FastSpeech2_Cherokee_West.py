@@ -21,7 +21,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
 
     datasets = list()
 
-    base_dir = os.path.join("Models", "FastSpeech2_Cherokee_West")
+    base_dir = os.path.join("Models", "FastSpeech2_Cherokee_West2")
     if model_dir is not None:
         meta_save_dir = model_dir
     else:
@@ -29,7 +29,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
     os.makedirs(meta_save_dir, exist_ok=True)
 
     print("Preparing")
-    langs: List[str] = ["en", "de", "fr", "nl", "ru", "chr"]
+    langs: List[str] = ["chr", "de", "en", "fr", "nl", "ru"]
     source_base: str = "/mount/resources/speech/corpora"
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
     for lang in langs:
