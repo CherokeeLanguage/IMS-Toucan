@@ -25,7 +25,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     torch.random.manual_seed(131714)
 
     print("Preparing")
-    langs: List[str] = ["de", "en", "fr", "nl", "ru", "chr"]
+    langs: List[str] = ["chr", "de", "en", "fr", "nl", "ru"]
     source_base: str = "/mount/resources/speech/corpora"
     # Non Cherokee before Cherokee to get better quality voice weights as the default for the model
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]

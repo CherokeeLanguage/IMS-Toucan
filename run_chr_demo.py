@@ -1,8 +1,10 @@
 import datetime
 import os
+import shutil
 import sys
 import textwrap
 import warnings
+from typing import List
 
 import torch
 
@@ -10,19 +12,20 @@ from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=UserWarning)
-    available_models = os.listdir("Models")
-    available_fastspeech_models = list()
-    for model in available_models:
-        if model.startswith("FastSpeech2_"):
-            available_fastspeech_models.append(model.lstrip("FastSpeech_2"))
-    model_id = "Cherokee_West"
+    # available_models = os.listdir("Models")
+    # available_fastspeech_models = list()
+    # for model in available_models:
+    #     if model.startswith("FastSpeech2_"):
+    #         available_fastspeech_models.append(model.lstrip("FastSpeech_2"))
+    model_id = "Cherokee_West2"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = InferenceFastSpeech2(device=device, model_name=model_id)
     tts.set_language("chr")
-
-    speaker_refs = ["ref-cno-f-1.wav", "ref-cno-f-2.wav", "ref-cno-f-3.wav", "ref-cno-m-1.wav", "ref-vctk-p310.wav",
-                    "ref-vctk-p341.wav", "ref-bc.wav", "ref-sam-hider.wav", "ref-wwacc.wav", "ref-mconrad.wav",
-                    "ref-df.wav", "ref-de-41.wav", "ref-de-29.wav", "ref-ru-04.wav"]
+    shutil.rmtree("samples", ignore_errors=True)
+    os.mkdir("samples")
+    speaker_refs: List[str] = list()
+    for file in os.listdir("ref"):
+        speaker_refs.append(file)
 
     text = textwrap.dedent("""
     Anǐ:táɂli ani:sgaya à:ni:no:halǐ:dô:he, ahwi dù:ni:hyohe.
@@ -37,10 +40,10 @@ if __name__ == '__main__':
     "Hada:hísê:gá", à:gò:sě:lé.
     """)
     texts = text.strip().splitlines()
-
+    speaker_refs.sort()
     for speaker_ref in speaker_refs:
         print(f"=== {speaker_ref}")
-        tts.set_utterance_embedding(speaker_ref)
-        file_location = f"_bragging-hunter-{speaker_ref}"
+        tts.set_utterance_embedding(os.path.join("ref",  speaker_ref))
+        file_location = os.path.join("samples", f"_bragging-hunter-{speaker_ref}")
         tts.read_to_file(texts, file_location)
         print()

@@ -1,5 +1,6 @@
 import argparse
 import sys
+import warnings
 from typing import Callable
 from typing import Dict
 
@@ -16,6 +17,8 @@ from TrainingInterfaces.TrainingPipelines.FastSpeech2_Cherokee_West import run a
 from TrainingInterfaces.TrainingPipelines.HiFiGAN_combined import run as hifigan_combined
 from TrainingInterfaces.TrainingPipelines.pretrain_aligner import run as aligner
 from TrainingInterfaces.TrainingPipelines.pretrain_aligner_chr import run as aligner_chr
+
+warnings.filterwarnings("ignore", category=Warning)
 
 pipeline_dict: Dict[str, Callable] = {
         "libri"        : libri,
@@ -66,8 +69,18 @@ if __name__ == '__main__':
             "Fine-tuning for HiFiGAN is not implemented as it didn't seem necessary. Should generalize across speakers without fine-tuning.")
         sys.exit()
 
-    pipeline_dict[args.pipeline](gpu_id=args.gpu_id,  #
-                                 resume_checkpoint=args.resume_checkpoint,  #
-                                 resume=args.resume,  #
-                                 finetune=args.finetune,  #
-                                 model_dir=args.model_save_dir)
+    func = pipeline_dict[args.pipeline]
+
+    if "align" in args.pipeline:
+        func(gpu_id=args.gpu_id,  #
+             resume_checkpoint=args.resume_checkpoint,  #
+             resume=args.resume,  #
+             finetune=args.finetune,  #
+             model_dir=args.model_save_dir)
+    else:
+        func(gpu_id=args.gpu_id,  #
+             resume_checkpoint=args.resume_checkpoint,  #
+             resume=args.resume,  #
+             finetune=args.finetune,  #
+             model_dir=args.model_save_dir,  #
+             remove_faulty_samples=False)

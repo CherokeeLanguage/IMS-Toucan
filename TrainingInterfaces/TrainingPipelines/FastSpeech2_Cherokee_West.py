@@ -11,7 +11,7 @@ from Utility.corpus_preparation import prepare_fastspeech_corpus
 from Utility.path_to_transcript_dicts import *
 
 
-def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_samples=True):
+def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_samples=False):
     torch.manual_seed(131714)
     random.seed(131714)
     torch.random.manual_seed(131714)
@@ -66,7 +66,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                datasets=datasets,  #
                batch_size=6,  #
                save_directory=meta_save_dir,  #
-               steps=300_000,  #
+               steps=30_000,  #
                steps_per_checkpoint=1000,  #
                lr=0.001,  #
                path_to_checkpoint=resume_checkpoint,  #
