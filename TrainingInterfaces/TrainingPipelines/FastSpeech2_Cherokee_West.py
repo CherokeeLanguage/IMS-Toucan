@@ -21,7 +21,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
 
     datasets = list()
 
-    base_dir = os.path.join("Models", "FastSpeech2_Cherokee_West2")
+    base_dir = os.path.join("Models", "FastSpeech2_Cherokee_West")
     if model_dir is not None:
         meta_save_dir = model_dir
     else:
@@ -66,7 +66,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                datasets=datasets,  #
                batch_size=6,  #
                save_directory=meta_save_dir,  #
-               steps=30_000,  #
+               steps=50_000,  #
                steps_per_checkpoint=1000,  #
                lr=0.001,  #
                path_to_checkpoint=resume_checkpoint,  #
