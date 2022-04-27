@@ -29,7 +29,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
     os.makedirs(meta_save_dir, exist_ok=True)
 
     print("Preparing")
-    langs: List[str] = ["chr", "de", "en", "fr", "nl", "ru"]
+    langs: List[str] = ["en", "fr", "nl", "ru", "de", "chr"]
     source_base: str = "/mount/resources/speech/corpora"
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
     for lang in langs:
@@ -53,9 +53,11 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
         datasets.append(prepare_fastspeech_corpus(  #
                 transcript_dict=subset,  #
                 corpus_dir=corpus_dir,  #
-                lang=lang))
+                lang=lang,  #
+                fine_tune_aligner=True))
 
     if remove_faulty_samples:
+        print("Scanning for faulty samples")
         find_and_remove_faulty_samples(net=FastSpeech2(lang_embs=100),  #
                                        datasets=datasets,  #
                                        device=torch.device("cuda"),  #
@@ -66,7 +68,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                datasets=datasets,  #
                batch_size=6,  #
                save_directory=meta_save_dir,  #
-               steps=80_000,  #
+               steps=150_001,  #
                steps_per_checkpoint=1000,  #
                lr=0.001,  #
                path_to_checkpoint=resume_checkpoint,  #
