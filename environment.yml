@@ -7,58 +7,33 @@ dependencies:
   - _libgcc_mutex=0.1
   - _openmp_mutex=4.5
   - blas=1.0
-  - bzip2=1.0.8
-  - ca-certificates=2021.9.30
-  - cairo=1.16.0
+  - ca-certificates=2021.10.8
   - certifi=2021.10.8
   - cudatoolkit=11.3.1
-  - expat=2.4.4
-  - ffmpeg=4.3
-  - fontconfig=2.13.1
   - freetype=2.10.4
-  - fribidi=1.0.10
-  - gettext=0.19.8.1
-  - glib=2.69.1
-  - gmp=6.2.1
-  - gnutls=3.6.13
-  - graphite2=1.3.14
-  - graphviz=2.42.3
-  - harfbuzz=2.4.0
-  - icu=58.2
-  - intel-openmp=2022.0.1
-  - jpeg=9d
-  - lame=3.100
+  - intel-openmp=2021.4.0
+  - jpeg=9e
   - lcms2=2.12
   - ld_impl_linux-64=2.35.1
   - libffi=3.3
   - libgcc-ng=9.3.0
   - libgomp=9.3.0
-  - libiconv=1.16
   - libpng=1.6.37
   - libstdcxx-ng=9.3.0
   - libtiff=4.2.0
-  - libtool=2.4.6
-  - libuuid=2.32.1
-  - libuv=1.42.0
+  - libuv=1.40.0
   - libwebp-base=1.2.2
-  - libxcb=1.14
-  - libxml2=2.9.12
   - libzlib=1.2.11
   - lz4-c=1.9.3
-  - mkl=2020.2
-  - mkl-service=2.3.0
-  - mkl_fft=1.2.0
-  - mkl_random=1.2.0
+  - mkl=2021.4.0
+  - mkl-service=2.4.0
+  - mkl_fft=1.3.1
+  - mkl_random=1.2.2
   - ncurses=6.2
-  - nettle=3.6
   - olefile=0.46
-  - openh264=2.1.1
-  - openjpeg=2.4.0
-  - openssl=1.1.1l
-  - pango=1.42.4
-  - pcre=8.45
+  - openssl=1.1.1n
   - pip=21.0.1
-  - pixman=0.40.0
+  - pydub=0.25.1
   - python=3.8.11
   - python_abi=3.8
   - pytorch=1.10.1
@@ -69,19 +44,8 @@ dependencies:
   - sqlite=3.36.0
   - tk=8.6.10
   - torchaudio=0.10.1
-  - torchvision=0.11.2
+  - typing_extensions=4.1.1
   - wheel=0.37.0
-  - xorg-kbproto=1.0.7
-  - xorg-libice=1.0.10
-  - xorg-libsm=1.2.3
-  - xorg-libx11=1.7.2
-  - xorg-libxext=1.3.4
-  - xorg-libxpm=3.5.13
-  - xorg-libxrender=0.9.10
-  - xorg-libxt=1.2.1
-  - xorg-renderproto=0.11.1
-  - xorg-xextproto=7.3.0
-  - xorg-xproto=7.0.31
   - xz=5.2.5
   - zlib=1.2.11
   - zstd=1.4.9
@@ -118,7 +82,7 @@ dependencies:
     - munkres==1.1.4
     - noisereduce==2.0.0
     - numba==0.54.0
-    - numpy==1.20.3
+    - numpy==1.20.0
     - packaging==21.0
     - panphon==0.19
     - phonemizer==2.2.2
