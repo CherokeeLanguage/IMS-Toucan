@@ -54,7 +54,7 @@ def main():
                 U:hnte gv:wtlő:hisd ge:hv́, na daks u:sganő:l ge:hv́ atlí:dő:hi.
                 Dù:nuktane na yv i:g v̀:sgina yu:dv̌:hndi.
                 Daksisgin gè:hv́hno dù:hlinohehtane ju:li̋: no:wle sida:ne:lv ani:ne̋:.
-                Nu:sdv du:wu:ktv́ dù:hno:sę:le nigv:wadv̋:hnd gèhv gv:wada:tlő:hisd gè:hv́.
+                Nu:sdv du:wu:ktv́ dù:hno:se:le nigv:wadv̋:hnd gèhv gv:wada:tlő:hisd gè:hv́.
                 No:w ù:sgwalvhihle i:g ané:hnaɂi nikv́ u:ndahlisane u:naktosdohdi ahntohgǐ:yâ:sdi.
                 Nù:ndv:ne:le ani:soɂ daks du:hno:se:lv́ nu:sdv̋hn du:wu:ktnanv́.
                 "Nvw agv̋:yi gadú:s.
