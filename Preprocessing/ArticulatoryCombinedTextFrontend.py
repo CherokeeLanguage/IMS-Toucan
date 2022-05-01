@@ -12,8 +12,8 @@ class ArticulatoryCombinedTextFrontend:
 
     def __init__(self,
                  language,
-                 use_word_boundaries=False,  # goes together well with
-                 # parallel models and a aligner. Doesn't go together 
+                 use_word_boundaries=True,  # goes together well with
+                 # parallel models and an aligner. Doesn't go together
                  # well with autoregressive models.
                  use_explicit_eos=True,
                  use_prosody=False,  # unfortunately the non-segmental
@@ -304,8 +304,9 @@ class ArticulatoryCombinedTextFrontend:
         if not self.use_prosody:
             # retain ~ as heuristic pause marker, even though all other symbols are removed with this option.
             # also retain . ? and ! since they can be indicators for the stop token
-            phones = phones.replace("ˌ", "").replace("ː", "").replace("ˑ", "") \
-                .replace("˘", "").replace("|", "").replace("‖", "")
+            # phones = phones.replace("ˌ", "").replace("ː", "").replace("ˑ", "") \
+            #     .replace("˘", "").replace("|", "").replace("‖", "")
+            pass
         if not self.use_word_boundaries:
             phones = phones.replace(" ", "")
         else:

@@ -20,3 +20,4 @@ split/
 singing/
 *.egg-info/
 aligner.pt
+samples/

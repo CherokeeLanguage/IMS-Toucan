@@ -7,6 +7,7 @@ import warnings
 from typing import List
 
 import torch
+from pydub import AudioSegment
 
 from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
@@ -21,12 +22,17 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str
     print()
     for speaker_ref in speaker_refs:
         path_speaker_ref: str = os.path.join("ref", speaker_ref)
-        dest_speaker_ref: str = os.path.join("samples", "z_ref-" + speaker_ref)
-        if not os.path.exists(dest_speaker_ref):
-            shutil.copy(path_speaker_ref, dest_speaker_ref)
+        dest_speaker_mp3: str = (os.path.join("samples", "z_ref-" + speaker_ref))[:-3] + "mp3"
+        if not os.path.exists(dest_speaker_mp3):
+            audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
+            audio.export(dest_speaker_mp3)
         tts.set_utterance_embedding(path_speaker_ref)
         file_location = os.path.join("samples", f"{file_prefix}-{speaker_ref}")
         tts.read_to_file(texts, file_location, silent=True)
+        audio: AudioSegment = AudioSegment.from_file(file_location)
+        mp3_file = file_location[:-3] + "mp3"
+        audio.export(mp3_file)
+        os.remove(file_location)
 
 
 def main():
@@ -40,6 +46,40 @@ def main():
     speaker_refs: List[str] = list()
     for file in os.listdir("ref"):
         speaker_refs.append(file)
+
+    text = textwrap.dedent("""
+                Nu:lstanǐ:dô:lv daks du:ki:yv jisd.
+                Niga̋:dadv ù:nahnte jisd ő:sd atló:dő:hi gè:sv́.
+                U:ntohgǐ:yâ:sdi u:ni:hno:hě:hle ji:sd nahn daks.
+                U:hnte gv:wtlő:hisd ge:hv́, na daks u:sganő:l ge:hv́ atlí:dő:hi.
+                Dù:nuktane na yv i:g v̀:sgina yu:dv̌:hndi.
+                Daksisgin gè:hv́hno dù:hlinohehtane ju:li̋: no:wle sida:ne:lv ani:ne̋:.
+                Nu:sdv du:wu:ktv́ dù:hno:sę:le nigv:wadv̋:hnd gèhv gv:wada:tlő:hisd gè:hv́.
+                No:w ù:sgwalvhihle i:g ané:hnaɂi nikv́ u:ndahlisane u:naktosdohdi ahntohgǐ:yâ:sdi.
+                Nù:ndv:ne:le ani:soɂ daks du:hno:se:lv́ nu:sdv̋hn du:wu:ktnanv́.
+                "Nvw agv̋:yi gadú:s.
+                 Yigv:lisgohldâ:s agv̋:y wijáɂlohisdi.
+                 Si:n ay jo yagilu:l o:hni yiga̋:,"
+                 u:dv:ne ji:sd.
+                 V̀:sgin nu:sdv́ u:ni:hno:he:hlv́ na nù:ndv:ne:le.
+                 Ù:hni:gi:se daksi.
+                 Agv̋:yi jo:dalv watlí:sé wù:go:he ji:sd.
+                 Nvv̌:w u:nale:nv́ ahntohkiyasgv́.
+                 Nu:sdv ù:ni:hno:he:hlv dakshnó: nagw nandv:ne:hv́ sa:gwuha si:danelv́ ane̋: uhna ju:li̋:ɂíle yig.
+                 Jo:dalv yiwű:luhj ji:sd uhna wagotisge daks wikanalu:sgv́ wù:dé:li:gv́ yu:sdi:ha.
+                 Sóɂ jo:dale yiwű:luhj v̀:sgi nà:dv́:ne:he.
+                 V:sgi:yv o:hni jò:dalv.
+                 Kil wa:tli:sv́ no:gw ju:yvwé:chonv́ ge:se ji:sd.
+                 No:gw wű:luhj wu:hnalu:sv́ o:hni jo:dalv wù:go:he no:gwu na daks dù:kǐ:yâ:sgv́ wigalo:sgv́ u:ndahlohisdi à:sdanv:hnv́.
+                 Nogw wu:go:he watli:sv́ na daks ji:sduhnv ju:yawé:chonv́ ge:hehno.
+                 Wù:nv̂:jî:tle naɂv.
+                 Tla yu:hnte ji:sdu ge:he nu:ndv́:ně:lv́.
+                 Asé:, niga̋:d u:ni:tlo:yí:ha ge:se, Daks ju:li no:le sidane:lv ani:ne̋:.
+                 Tla yade:loho:sge nandv́:nè:hv́.
+                 Na daks sa:gwuha na gadú:s o:dalvle yig è:do:he hahn o:hnihno o:dalv na ju:le:nv́.
+                 Daks ge:se yu:du:li̋: gő:sd kilo u:tvdi nu:lstani:do:lv́, wǔ:nv̂:ji̋:hla na ji:sd ju:yawé:chonv ge:se u:tlő:yigw jinadv́:ne:ho kohiyv jíg yidu:yawe̋:j yigánv́:gigwu.                   
+                """)
+    run_tts(tts, speaker_refs, "turtle-beat-rabbit", text)
 
     text = textwrap.dedent("""
         Anǐ:táɂli ani:sgaya à:ni:no:halǐ:dô:he, ahwi dù:ni:hyohe.
@@ -65,7 +105,7 @@ def main():
         Ù:ndv́:nastanéhnó: ju:hntohgǐyâsdi.
         Agv:yi̋:hno wu:lúhjv́ galv:ndiɂa wikanahltv u:tohi̋:sdi gè:sv̌ɂi.
         Doyúhnó: sgi nù:ndv́:ne:le.
-        agv:ydv: wù:tlv:sdane wahya.
+        Agv:ydv: wù:tlv:sdane wahya.
         Ganí:daɂdv wù:go:he jí:sdv:na uhnáhnó: wù:tosé:ɂi.
         Wű:luhjahnó: galv̋:nad digè:sv vnawdv:sgwu naɂv ù:to:hi:se jí:sdv:na.
         Nǒ:wúhn taɂli:né wu:ni̋:lúhj u:dlőy nv:ndv́:ne:le alesgwu joɂi:né nvhgi:né hisgi:né sú:dali:né kv̋:hnihnó: gahlgwǒ:gi:né wù:ni:lúhjv́.

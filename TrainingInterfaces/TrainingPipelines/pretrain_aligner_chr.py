@@ -46,14 +46,18 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
                     wav = os.path.join(source_base, source, parts[0])
                     wav = os.path.realpath(wav)
                     path_to_transcript_dict[wav] = transcript
-            max_size: int = min(10_000, len(path_to_transcript_dict))
+
+            max_size: int
+            max_size = 8_000
             items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
+            while len(items) < max_size:
+                items.extend(items.copy())
             subset = dict(random.sample(items, max_size))
             datasets.append(prepare_aligner_corpus(transcript_dict=subset,
                                                    corpus_dir=corpus_dir,
                                                    lang=lang,
                                                    device=device,
-                                                   loading_processes=1))
+                                                   loading_processes=8))
 
     train_set = ConcatDataset(datasets)
     save_dir = os.path.join("Models", "Aligner")
@@ -64,7 +68,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     train_aligner(train_dataset=train_set,
                   device=device,
                   save_directory=save_dir,
-                  steps=500_000,
+                  steps=100_000,
                   batch_size=32,
                   path_to_checkpoint=resume_checkpoint,
                   fine_tune=finetune,
