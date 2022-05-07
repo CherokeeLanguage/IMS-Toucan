@@ -21,3 +21,4 @@ singing/
 *.egg-info/
 aligner.pt
 samples/
+samples.animals/
