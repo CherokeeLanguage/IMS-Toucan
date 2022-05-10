@@ -32,7 +32,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
     print("Preparing")
     langs: List[str] = ["en", "fr", "nl", "ru", "de", "chr"]
     source_base: str = "/mount/resources/speech/corpora"
-    sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
+    sources: List[str] = ["other-audio-data"]
     for lang in langs:
         corpus_dir = os.path.join("Corpora", f"tts-{lang}")
         path_to_transcript_dict: Dict[str, str] = dict()
@@ -49,14 +49,13 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                     wav = os.path.realpath(wav)
                     path_to_transcript_dict[wav] = transcript
         items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
-        max_size:int = min(8_000, len(items))
+        max_size:int = min(10_000, len(items))
         subset = dict(random.sample(items, max_size))
         datasets.append(prepare_fastspeech_corpus(  #
                 transcript_dict=subset,  #
                 corpus_dir=corpus_dir,  #
                 lang=lang,  #
-                fine_tune_aligner=True,  #
-                ctc_selection=True))
+                fine_tune_aligner=True))
 
     if remove_faulty_samples:
         print("Scanning for faulty samples")
@@ -70,8 +69,8 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                datasets=datasets,  #
                batch_size=6,  #
                save_directory=meta_save_dir,  #
-               steps=40_001,  #
-               steps_per_checkpoint=1_000,  #
+               steps=101,  #
+               steps_per_checkpoint=100,  #
                lr=0.001,  #
                path_to_checkpoint=resume_checkpoint,  #
                resume=resume)

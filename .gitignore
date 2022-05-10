@@ -22,3 +22,5 @@ singing/
 aligner.pt
 samples/
 samples.animals/
+*.zip
+/samples*/

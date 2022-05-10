@@ -13,6 +13,8 @@ from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
+dest_folder: str = "samples.stories"
+
 
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str, text: str):
     texts = text.strip().splitlines()
@@ -22,12 +24,12 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str
     print()
     for speaker_ref in speaker_refs:
         path_speaker_ref: str = os.path.join("ref", speaker_ref)
-        dest_speaker_mp3: str = (os.path.join("samples", "z_ref-" + speaker_ref))[:-3] + "mp3"
+        dest_speaker_mp3: str = (os.path.join(dest_folder, "z_ref-" + speaker_ref))[:-3] + "mp3"
         if not os.path.exists(dest_speaker_mp3):
             audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
             audio.export(dest_speaker_mp3)
         tts.set_utterance_embedding(path_speaker_ref)
-        file_location = os.path.join("samples", f"{file_prefix}-{speaker_ref}")
+        file_location = os.path.join(dest_folder, f"{file_prefix}-{speaker_ref}")
         tts.read_to_file(texts, file_location, silent=True)
         audio: AudioSegment = AudioSegment.from_file(file_location)
         mp3_file = file_location[:-3] + "mp3"
@@ -41,8 +43,8 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = InferenceFastSpeech2(device=device, model_name=model_id)
     tts.set_language("chr")
-    shutil.rmtree("samples", ignore_errors=True)
-    os.mkdir("samples")
+    shutil.rmtree(dest_folder, ignore_errors=True)
+    os.mkdir(dest_folder)
     speaker_refs: List[str] = list()
     for file in os.listdir("ref"):
         speaker_refs.append(file)
