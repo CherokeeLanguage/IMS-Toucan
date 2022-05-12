@@ -19,9 +19,13 @@ dest_folder: str = "samples.stories"
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str, text: str):
     texts = text.strip().splitlines()
     speaker_refs.sort()
-    for text in texts:
-        print(text)
-    print()
+    with open(os.path.join(dest_folder, f"{file_prefix}.txt"), "w") as w:
+        for text in texts:
+            print(text)
+            w.write(text.strip())
+            w.write("\n")
+        print()
+
     for speaker_ref in speaker_refs:
         path_speaker_ref: str = os.path.join("ref", speaker_ref)
         dest_speaker_mp3: str = (os.path.join(dest_folder, "z_ref-" + speaker_ref))[:-3] + "mp3"
@@ -49,7 +53,7 @@ def main():
     for file in os.listdir("ref"):
         speaker_refs.append(file)
 
-    text = textwrap.dedent("""
+    turtle_rabbit = """
                 Nu:lstanǐ:dô:lv daks du:ki:yv jisd.
                 Niga̋:dadv ù:nahnte jisd ő:sd atló:dő:hi gè:sv́.
                 U:ntohgǐ:yâ:sdi u:ni:hno:hě:hle ji:sd nahn daks.
@@ -80,10 +84,11 @@ def main():
                  Tla yade:loho:sge nandv́:nè:hv́.
                  Na daks sa:gwuha na gadú:s o:dalvle yig è:do:he hahn o:hnihno o:dalv na ju:le:nv́.
                  Daks ge:se yu:du:li̋: gő:sd kilo u:tvdi nu:lstani:do:lv́, wǔ:nv̂:ji̋:hla na ji:sd ju:yawé:chonv ge:se u:tlő:yigw jinadv́:ne:ho kohiyv jíg yidu:yawe̋:j yigánv́:gigwu.                   
-                """)
+                """
+    text = textwrap.dedent(turtle_rabbit)
     run_tts(tts, speaker_refs, "turtle-beat-rabbit", text)
 
-    text = textwrap.dedent("""
+    bragging_hunter = """
         Anǐ:táɂli ani:sgaya à:ni:no:halǐ:dô:he, ahwi dù:ni:hyohe.
         Sà:gwű:hno asgaya galò:gwé ga:ne:he sóɂíhnv́ hlā.
         Ná:hnv́ galò:gwé ga:ne̋:hi u:dlv̌:kwsati gè:sé, ale go:hű:sdi yǔ:dv̂:ne̋:la à:dlv̌:kwsgé.
@@ -94,10 +99,11 @@ def main():
         Ù:ná:ne:lǔ:gî:se do:juwáɂihlv́ dí:dla, naɂv̌:hníge̋:hnv wǔ:ní:luhja ù:ni:go:hé sǒ:gwíli gáɂnv̋.
         "Sǒ:gwílílê ì:nada:hísi", ù:dv:hné ná u:yo:hlv̋.
         "Hada:hísê:gá", à:gò:sě:lé.
-        """)
+        """
+    text = textwrap.dedent(bragging_hunter)
     run_tts(tts, speaker_refs, "bragging-hunter", text)
 
-    text = textwrap.dedent("""
+    wolf_crawdad = """
         Wahya ale jí:sdv:na.
         Ko:higv jigè:sv à:nè:he wahya ale jí:sdv:na.
         Sa:wúhnó: iyúwa̋kd à:gadu:lǐsgv aji:yè:sdi jí:sdv:na wahya.
@@ -120,10 +126,11 @@ def main():
         "Jini:dadv́hnó: tskilawdi:se," à:go:sě:le jí:sdv:na.
         Uhnawdvhno ajikehǐ:dô:le jí:sdv:n nigayejini:yi̋:sg.
         Uhnáhnó: wajini:yv̋:hnó: waji:yaɂohne v̀:sgiwuhnó: nigǎ:ɂa.        
-        """)
+        """
+    text = textwrap.dedent(wolf_crawdad)
     run_tts(tts, speaker_refs, "wolf-and-crawdad", text)
 
-    text = textwrap.dedent("""
+    search_party = """
             Ju:naktenolǐ:dô:le.
             Luhiyv jige:sv tlasi esga̋: ù:nade:hnv.
             Ù:ni:ɂlúhjv jige:se gâ:yul ù:né:dô:le ù:naktě:nô:lǐ:dô:le i:ga̋:d.
@@ -149,7 +156,8 @@ def main():
             U:sginv "jű:sgwagahli" jidù:dó:ɂa.
             Ù:hna á:mó wù:ni:luhje ù:hnanvsg.
             Á:m sgwi:sdosv́ kvnage:sv galgě:ye u:nasgiyű:sd á:mó jidù:dó:ɂe.
-            """)
+            """
+    text = textwrap.dedent(search_party)
     run_tts(tts, speaker_refs, "search-party", text)
 
 
