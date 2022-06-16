@@ -61,7 +61,7 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
                 audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
                 audio.export(dest_speaker_mp3, parameters=["-qscale:a", "3"])
             tts.set_utterance_embedding(path_speaker_ref)
-            voice_folder: str = os.path.join(dest_folder, f"{speaker_ref}")
+            voice_folder: str = os.path.join(dest_folder, f"{speaker_ref[:-4]}")
             os.makedirs(voice_folder, exist_ok=True)
             wav_file = os.path.join(voice_folder, f"{mp3_file}.wav")
             tts.read_to_file([pronounce], wav_file, silent=True)

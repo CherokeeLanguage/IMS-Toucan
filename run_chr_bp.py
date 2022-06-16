@@ -25,7 +25,7 @@ from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-dest_folder: str = "samples.osiyo-tohiju"
+dest_folder: str = "samples.bound-pronouns-app"
 
 model_id:str = "Cherokee_West"
 
@@ -41,20 +41,28 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             if line:
                 lines.append(line)
 
-    for line in lines:
-        pronounce: str = unicodedata.normalize("NFC", line.strip())
-        print(pronounce)
+    with open(os.path.join(dest_folder, "bound-pronouns-app.txt"), "w") as w:
+        for line in lines:
+            line: str = unicodedata.normalize("NFC", line.strip())
+            parts: List[str] = line.split("|")
+            pronounce: str = parts[7]
+            english: str = parts[8]
+            file_name: str = parts[9]
+            mp3_file: str = f"{file_name}.mp3"
+            if file_name == "FILENAME":
+                continue
+            w.write(f"{pronounce}|{mp3_file}|{english}\n")
 
     for speaker_ref in speaker_refs:
-        ix: int = 0
-        print(f"-{speaker_ref}")
+        print(f"{speaker_ref}")
         for line in lines:
-            pronounce: str = unicodedata.normalize("NFC", line.strip())  # unicodedata.normalize("NFC", parts[1])
-            file_name: str = re.sub("(?i)[^a-z0-9.!?,\\s]", "", unicodedata.normalize("NFD", pronounce))
-            if file_name[-1] == ".":
-                file_name = file_name[:-1]
-            ix += 1
-            mp3_file: str = f"{ix:03}-{file_name}.mp3"
+            line: str = unicodedata.normalize("NFC", line.strip())
+            parts: List[str] = line.split("|")
+            pronounce: str = parts[7]
+            file_name: str = parts[9]
+            mp3_file: str = f"{file_name}.mp3"
+            if file_name == "FILENAME":
+                continue
             path_speaker_ref: str = os.path.join("ref", speaker_ref)
             dest_speaker_mp3: str = os.path.join(dest_folder, "ref-" + speaker_ref)[:-3] + "mp3"
             if not os.path.exists(dest_speaker_mp3):
@@ -80,7 +88,7 @@ def main():
     speaker_refs: List[str] = list()
     for file in os.listdir("ref"):
         speaker_refs.append(file)
-    text_file: str = os.path.expanduser("~/git/Cherokee-TTS/data/tests/osiyo-tohiju-then-what/osiyo-tohiju-then-what.txt")
+    text_file: str = os.path.expanduser("~/git/Cherokee-TTS/data/tests/bound-pronouns-app/review-sheet.txt")
     run_tts(tts, speaker_refs, text_file)
 
 

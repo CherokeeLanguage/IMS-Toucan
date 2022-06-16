@@ -17,6 +17,7 @@ dest_folder: str = "samples.stories"
 
 
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str, text: str):
+    text = textwrap.dedent(text)
     texts = text.strip().splitlines()
     speaker_refs.sort()
     with open(os.path.join(dest_folder, f"{file_prefix}.txt"), "w") as w:
@@ -42,7 +43,6 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str
 
 
 def main():
-    text: str
     model_id = "Cherokee_West"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = InferenceFastSpeech2(device=device, model_name=model_id)
@@ -54,39 +54,35 @@ def main():
         speaker_refs.append(file)
 
     turtle_rabbit = """
-                Nu:lstanǐ:dô:lv daks du:ki:yv jisd.
-                Niga̋:dadv ù:nahnte jisd ő:sd atló:dő:hi gè:sv́.
-                U:ntohgǐ:yâ:sdi u:ni:hno:hě:hle ji:sd nahn daks.
-                U:hnte gv:wtlő:hisd ge:hv́, na daks u:sganő:l ge:hv́ atlí:dő:hi.
-                Dù:nuktane na yv i:g v̀:sgina yu:dv̌:hndi.
-                Daksisgin gè:hv́hno dù:hlinohehtane ju:li̋: no:wle sida:ne:lv ani:ne̋:.
-                Nu:sdv du:wu:ktv́ dù:hno:se:le nigv:wadv̋:hnd gèhv gv:wada:tlő:hisd gè:hv́.
-                No:w ù:sgwalvhihle i:g ané:hnaɂi nikv́ u:ndahlisane u:naktosdohdi ahntohgǐ:yâ:sdi.
-                Nù:ndv:ne:le ani:soɂ daks du:hno:se:lv́ nu:sdv̋hn du:wu:ktnanv́.
-                "Nvw agv̋:yi gadú:s.
-                 Yigv:lisgohldâ:s agv̋:y wijáɂlohisdi.
-                 Si:n ay jo yagilu:l o:hni yiga̋:,"
-                 u:dv:ne ji:sd.
-                 V̀:sgin nu:sdv́ u:ni:hno:he:hlv́ na nù:ndv:ne:le.
-                 Ù:hni:gi:se daksi.
-                 Agv̋:yi jo:dalv watlí:sé wù:go:he ji:sd.
-                 Nvv̌:w u:nale:nv́ ahntohkiyasgv́.
-                 Nu:sdv ù:ni:hno:he:hlv dakshnó: nagw nandv:ne:hv́ sa:gwuha si:danelv́ ane̋: uhna ju:li̋:ɂíle yig.
-                 Jo:dalv yiwű:luhj ji:sd uhna wagotisge daks wikanalu:sgv́ wù:dé:li:gv́ yu:sdi:ha.
-                 Sóɂ jo:dale yiwű:luhj v̀:sgi nà:dv́:ne:he.
-                 V:sgi:yv o:hni jò:dalv.
-                 Kil wa:tli:sv́ no:gw ju:yvwé:chonv́ ge:se ji:sd.
-                 No:gw wű:luhj wu:hnalu:sv́ o:hni jo:dalv wù:go:he no:gwu na daks dù:kǐ:yâ:sgv́ wigalo:sgv́ u:ndahlohisdi à:sdanv:hnv́.
-                 Nogw wu:go:he watli:sv́ na daks ji:sduhnv ju:yawé:chonv́ ge:hehno.
-                 Wù:nv̂:jî:tle naɂv.
-                 Tla yu:hnte ji:sdu ge:he nu:ndv́:ně:lv́.
-                 Asé:, niga̋:d u:ni:tlo:yí:ha ge:se, Daks ju:li no:le sidane:lv ani:ne̋:.
-                 Tla yade:loho:sge nandv́:nè:hv́.
-                 Na daks sa:gwuha na gadú:s o:dalvle yig è:do:he hahn o:hnihno o:dalv na ju:le:nv́.
-                 Daks ge:se yu:du:li̋: gő:sd kilo u:tvdi nu:lstani:do:lv́, wǔ:nv̂:ji̋:hla na ji:sd ju:yawé:chonv ge:se u:tlő:yigw jinadv́:ne:ho kohiyv jíg yidu:yawe̋:j yigánv́:gigwu.                   
-                """
-    text = textwrap.dedent(turtle_rabbit)
-    run_tts(tts, speaker_refs, "turtle-beat-rabbit", text)
+        Nu:lstanǐ:dô:lv daks du:ki:yv jisd.
+        Niga̋:dadv ù:nahnte jisd ő:sd atló:dő:hi gè:sv́.
+        U:ntohgǐ:yâ:sdi u:ni:hno:hě:hle ji:sd nahn daks.
+        U:hnte gv:wtlő:hisd ge:hv́, na daks u:sganő:l ge:hv́ atlí:dő:hi.
+        Dù:nuktane na yv i:g v̀:sgina yu:dv̌:hndi.
+        Daksisgin gè:hv́hno dù:hlinohehtane ju:li̋: no:wle sida:ne:lv ani:ne̋:.
+        Nu:sdv du:wu:ktv́ dù:hno:se:le nigv:wadv̋:hnd gèhv gv:wada:tlő:hisd gè:hv́.
+        No:w ù:sgwalvhihle i:g ané:hnaɂi nikv́ u:ndahlisane u:naktosdohdi ahntohgǐ:yâ:sdi.
+        Nù:ndv:ne:le ani:soɂ daks du:hno:se:lv́ nu:sdv̋hn du:wu:ktnanv́.
+        "Nvw agv̋:yi gadú:s. Yigv:lisgohldâ:s agv̋:y wijáɂlohisdi. Si:n ay jo yagilu:l o:hni yiga̋:," u:dv:ne ji:sd.
+        V̀:sgin nu:sdv́ u:ni:hno:he:hlv́ na nù:ndv:ne:le.
+        Ù:hni:gi:se daksi.
+        Agv̋:yi jo:dalv watlí:sé wù:go:he ji:sd.
+        Nvv̌:w u:nale:nv́ ahntohkiyasgv́.
+        Nu:sdv ù:ni:hno:he:hlv dakshnó: nagw nandv:ne:hv́ sa:gwuha si:danelv́ ane̋: uhna ju:li̋:ɂíle yig.
+        Jo:dalv yiwű:luhj ji:sd uhna wagotisge daks wikanalu:sgv́ wù:dé:li:gv́ yu:sdi:ha.
+        Sóɂ jo:dale yiwű:luhj v̀:sgi nà:dv́:ne:he.
+        V:sgi:yv o:hni jò:dalv.
+        Kil wa:tli:sv́ no:gw ju:yvwé:chonv́ ge:se ji:sd.
+        No:gw wű:luhj wu:hnalu:sv́ o:hni jo:dalv wù:go:he no:gwu na daks dù:kǐ:yâ:sgv́ wigalo:sgv́ u:ndahlohisdi à:sdanv:hnv́.
+        Nogw wu:go:he watli:sv́ na daks ji:sduhnv ju:yawé:chonv́ ge:hehno.
+        Wù:nv̂:jî:tle naɂv.
+        Tla yu:hnte ji:sdu ge:he nu:ndv́:ně:lv́.
+        Asé:, niga̋:d u:ni:tlo:yí:ha ge:se, daks ju:li no:le sidane:lv ani:ne̋:.
+        Tla yade:loho:sge nandv́:nè:hv́.
+        Na daks sa:gwuha na gadú:s o:dalvle yig è:do:he hahn o:hnihno o:dalv na ju:le:nv́.
+        Daks ge:se yu:du:li̋: gő:sd kilo u:tvdi nu:lstani:do:lv́, wǔ:nv̂:ji̋:hla na ji:sd ju:yawé:chonv ge:se u:tlő:yigw jinadv́:ne:ho kohiyv jíg yidu:yawe̋:j yigánv́:gigwu.
+        """
+    run_tts(tts, speaker_refs, "turtle-beat-rabbit", turtle_rabbit)
 
     bragging_hunter = """
         Anǐ:táɂli ani:sgaya à:ni:no:halǐ:dô:he, ahwi dù:ni:hyohe.
@@ -100,8 +96,7 @@ def main():
         "Sǒ:gwílílê ì:nada:hísi", ù:dv:hné ná u:yo:hlv̋.
         "Hada:hísê:gá", à:gò:sě:lé.
         """
-    text = textwrap.dedent(bragging_hunter)
-    run_tts(tts, speaker_refs, "bragging-hunter", text)
+    run_tts(tts, speaker_refs, "bragging-hunter", bragging_hunter)
 
     wolf_crawdad = """
         Wahya ale jí:sdv:na.
@@ -127,8 +122,7 @@ def main():
         Uhnawdvhno ajikehǐ:dô:le jí:sdv:n nigayejini:yi̋:sg.
         Uhnáhnó: wajini:yv̋:hnó: waji:yaɂohne v̀:sgiwuhnó: nigǎ:ɂa.        
         """
-    text = textwrap.dedent(wolf_crawdad)
-    run_tts(tts, speaker_refs, "wolf-and-crawdad", text)
+    run_tts(tts, speaker_refs, "wolf-and-crawdad", wolf_crawdad)
 
     search_party = """
             Ju:naktenolǐ:dô:le.
@@ -157,8 +151,20 @@ def main():
             Ù:hna á:mó wù:ni:luhje ù:hnanvsg.
             Á:m sgwi:sdosv́ kvnage:sv galgě:ye u:nasgiyű:sd á:mó jidù:dó:ɂe.
             """
-    text = textwrap.dedent(search_party)
-    run_tts(tts, speaker_refs, "search-party", text)
+    run_tts(tts, speaker_refs, "search-party", search_party)
+
+    ball_of_fire = """
+    Ja:gwa:tv:si:di:sv i:lv́hdlv̋ hiksgǒ gahlgwǒ:gi ju:de:tiyv́:sadí:sv̋ hlá a:sí di:na:ga:li:sgi
+    yidǒ:gí:si:ladé o:ge:nv́:sv̋ galhjǒ:de o:gi:lv̌:kwdi ge:sv́ naɂv́
+    i:jo:ga:da:li ju:né:nv:sv wo:ge:da:sdi di:da:yv:la:tv:sgi u:ni:hv alé
+    ju:li:si:hnv:dagwu iyű:sdi ilv̋:sgi iyada:ne:lv da:nadlo:sǐ:híhv́
+    di:da:yv:la:tv:sgi ju:na:ga:tǒ:stáni:hlv̋:ɂi sa:gwú iyúwa:go:di
+    sv:nǒ:yi wíɂo:gi:lu:hja jo:gé:nv:sv
+    gi:tli u:sga:se:hdǐ:gwu nigawe:sgv́ da:suhwi:sgv́ uhló:yigwu go:hű:sdi á:gwuiyv́ ja:go:wa:tǐ:sgo
+    u:hló:yi na:dv́:ne:hv́ á:ne:lǔ:gî:sgv́ áge iyú:danv:hi̋:da no:gwúlé díajv́:sgv́
+    [17]
+    """
+    # run_tts(tts, speaker_refs, "narrative_011", ball_of_fire)
 
 
 if __name__ == '__main__':

@@ -40,6 +40,8 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
             toucan_file = os.path.join(source_base, source, f"ims-toucan-{lang}.txt")
             if not os.path.exists(toucan_file):
                 continue
+            else:
+                print(f"=== LOADING: {toucan_file}")
             with open(toucan_file, "r") as r:
                 for line in r:
                     line = line.strip()
@@ -49,14 +51,15 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                     wav = os.path.realpath(wav)
                     path_to_transcript_dict[wav] = transcript
         items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
-        max_size:int = min(8_000, len(items))
+        max_size: int = min(8_000, len(items))
         subset = dict(random.sample(items, max_size))
         datasets.append(prepare_fastspeech_corpus(  #
                 transcript_dict=subset,  #
                 corpus_dir=corpus_dir,  #
                 lang=lang,  #
                 fine_tune_aligner=True,  #
-                ctc_selection=True))
+                ctc_selection=True,
+                phone_input=False))
 
     if remove_faulty_samples:
         print("Scanning for faulty samples")
@@ -70,7 +73,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume, remove_faulty_sa
                datasets=datasets,  #
                batch_size=6,  #
                save_directory=meta_save_dir,  #
-               steps=200_001,  #
+               steps=150_001,  #
                steps_per_checkpoint=1_000,  #
                lr=0.001,  #
                path_to_checkpoint=resume_checkpoint,  #

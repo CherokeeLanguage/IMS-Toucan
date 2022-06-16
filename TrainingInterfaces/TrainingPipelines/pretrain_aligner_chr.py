@@ -1,4 +1,3 @@
-import os
 import random
 from typing import Tuple
 
@@ -25,19 +24,21 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     torch.random.manual_seed(131714)
 
     print("Preparing")
-    langs: List[str] = ["chr", "de", "en", "fr", "nl", "ru"]
+    langs: List[str] = ["en", "de", "fr", "nl", "ru", "chr"]
     source_base: str = "/mount/resources/speech/corpora"
     # Non Cherokee before Cherokee to get better quality voice weights as the default for the model
     sources: List[str] = ["other-audio-data", "cherokee-audio-data", "cherokee-audio-data-private"]
     datasets = list()
 
-    for source in sources:
-        for lang in langs:
+    for lang in langs:
+        corpus_dir = os.path.join("Corpora", f"aligner-{lang}")
+        path_to_transcript_dict: Dict[str, str] = dict()
+        for source in sources:
             toucan_file = os.path.join(source_base, source, f"ims-toucan-{lang}.txt")
-            corpus_dir = os.path.join("Corpora", f"aligner-{source}-{lang}")
-            path_to_transcript_dict: Dict[str, str] = dict()
             if not os.path.exists(toucan_file):
                 continue
+            else:
+                print(f"--- LOADING: {toucan_file}")
             with open(toucan_file, "r") as r:
                 for line in r:
                     line = line.strip()
@@ -47,17 +48,15 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
                     wav = os.path.realpath(wav)
                     path_to_transcript_dict[wav] = transcript
 
-            max_size: int
-            max_size = 8_000
-            items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
-            while len(items) < max_size:
-                items.extend(items.copy())
-            subset = dict(random.sample(items, max_size))
-            datasets.append(prepare_aligner_corpus(transcript_dict=subset,
-                                                   corpus_dir=corpus_dir,
-                                                   lang=lang,
-                                                   device=device,
-                                                   loading_processes=8))
+        items: List[Tuple[str, str]] = [*path_to_transcript_dict.items()]
+        max_size: int = min(8_000, len(items))
+        subset = dict(random.sample(items, max_size))
+        print(f"Aligner samples for {lang}: {len(subset)}")
+        datasets.append(prepare_aligner_corpus(transcript_dict=subset,
+                                               corpus_dir=corpus_dir,
+                                               lang=lang,
+                                               device=device,
+                                               loading_processes=8))
 
     train_set = ConcatDataset(datasets)
     save_dir = os.path.join("Models", "Aligner")
@@ -68,7 +67,7 @@ def run(gpu_id, resume_checkpoint, finetune, model_dir, resume):
     train_aligner(train_dataset=train_set,
                   device=device,
                   save_directory=save_dir,
-                  steps=500_001,
+                  steps=200_001,
                   batch_size=32,
                   path_to_checkpoint=resume_checkpoint,
                   fine_tune=finetune,

@@ -4,6 +4,8 @@ import warnings
 from typing import Callable
 from typing import Dict
 
+from matplotlib import pyplot as plt
+
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_English import run as english
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_German import run as full_ger
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_GermanSingle import run as single_ger
@@ -14,7 +16,6 @@ from TrainingInterfaces.TrainingPipelines.FastSpeech2_MetaCheckpoint import run 
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_Nancy import run as nancy
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_RussianSingle import run as single_rus
 from TrainingInterfaces.TrainingPipelines.FastSpeech2_Cherokee_West import run as chr_w_run
-from TrainingInterfaces.TrainingPipelines.FastSpeech2_comvoi import run as comvoi_run
 from TrainingInterfaces.TrainingPipelines.HiFiGAN_combined import run as hifigan_combined
 from TrainingInterfaces.TrainingPipelines.pretrain_aligner import run as aligner
 from TrainingInterfaces.TrainingPipelines.pretrain_aligner_chr import run as aligner_chr
@@ -35,11 +36,12 @@ pipeline_dict: Dict[str, Callable] = {
         "full_ger"     : full_ger,
         "english"      : english,
         "chr"          : chr_w_run,
-        "chr-w"        : chr_w_run,
-        "comvoi"       : comvoi_run
+        "chr-w"        : chr_w_run
 }
 
 if __name__ == '__main__':
+
+    plt.rcParams['savefig.dpi'] = 300
 
     parser = argparse.ArgumentParser(description='IMS Speech Synthesis Toolkit - Call to Train')
 
