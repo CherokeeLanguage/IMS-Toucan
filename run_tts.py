@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import pathlib
 import shutil
 import tempfile
 from datetime import date
@@ -36,9 +37,13 @@ def main():
         ref_file = None
     text: str = args.text
 
+    work_dir = os.getcwd()
+    my_dir = pathlib.Path(__file__).parent.absolute()
+    os.chdir(my_dir)
     model_id = "Cherokee_West"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    os.chdir(work_dir)
     tts.set_language(args.lang)
     if args.ref:
         tts.set_utterance_embedding(ref_file)
