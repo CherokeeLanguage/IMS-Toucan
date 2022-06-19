@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 """true" '''\'
 set -e
-eval "$(conda shell.bash hook)"
+eval "$(${CONDA_EXE:-conda} shell.bash hook)"
+conda deactivate
 conda activate toucan_conda_venv
 exec python "$0" "$@"
 exit $?
