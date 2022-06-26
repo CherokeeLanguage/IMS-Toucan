@@ -20,6 +20,7 @@ from typing import List
 
 import torch
 from pydub import AudioSegment
+from tqdm import tqdm
 
 from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
@@ -28,6 +29,10 @@ warnings.filterwarnings("ignore", category=UserWarning)
 dest_folder: str = "samples.bound-pronouns-app"
 
 model_id:str = "Cherokee_West"
+
+IX_CHEROKEE: int = 7
+IX_ENGLISH: int = 8
+IX_FILE_NAME: int = 11
 
 
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
@@ -41,27 +46,27 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             if line:
                 lines.append(line)
 
-    with open(os.path.join(dest_folder, "bound-pronouns-app.txt"), "w") as w:
+    with open(os.path.join(dest_folder, "bound-pronouns.txt"), "w") as w:
         for line in lines:
             line: str = unicodedata.normalize("NFC", line.strip())
             parts: List[str] = line.split("|")
-            pronounce: str = parts[7]
-            english: str = parts[8]
-            file_name: str = parts[9]
+            pronounce: str = parts[IX_CHEROKEE]
+            english: str = parts[IX_ENGLISH]
+            file_name: str = parts[IX_FILE_NAME]
             mp3_file: str = f"{file_name}.mp3"
-            if file_name == "FILENAME":
+            if file_name == "APP_FILE":
                 continue
             w.write(f"{pronounce}|{mp3_file}|{english}\n")
 
     for speaker_ref in speaker_refs:
         print(f"{speaker_ref}")
-        for line in lines:
+        for line in tqdm(lines):
             line: str = unicodedata.normalize("NFC", line.strip())
             parts: List[str] = line.split("|")
             pronounce: str = parts[7]
             file_name: str = parts[9]
             mp3_file: str = f"{file_name}.mp3"
-            if file_name == "FILENAME":
+            if file_name == "APP_FILE":
                 continue
             path_speaker_ref: str = os.path.join("ref", speaker_ref)
             dest_speaker_mp3: str = os.path.join(dest_folder, "ref-" + speaker_ref)[:-3] + "mp3"
@@ -88,7 +93,7 @@ def main():
     speaker_refs: List[str] = list()
     for file in os.listdir("ref"):
         speaker_refs.append(file)
-    text_file: str = os.path.expanduser("~/git/Cherokee-TTS/data/tests/bound-pronouns-app/review-sheet.txt")
+    text_file: str = os.path.expanduser("~/git/audio-lessons-generator-python/bound-pronouns.txt")
     run_tts(tts, speaker_refs, text_file)
 
 
