@@ -63,8 +63,8 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
         for line in tqdm(lines):
             line: str = unicodedata.normalize("NFC", line.strip())
             parts: List[str] = line.split("|")
-            pronounce: str = parts[7]
-            file_name: str = parts[9]
+            pronounce: str = parts[IX_CHEROKEE]
+            file_name: str = parts[IX_FILE_NAME]
             mp3_file: str = f"{file_name}.mp3"
             if file_name == "APP_FILE":
                 continue
@@ -79,7 +79,9 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             wav_file = os.path.join(voice_folder, f"{mp3_file}.wav")
             tts.read_to_file([pronounce], wav_file, silent=True)
             audio: AudioSegment = AudioSegment.from_file(wav_file)
-            audio.export(os.path.join(voice_folder, mp3_file), parameters=["-qscale:a", "3"])
+            output_file: str = os.path.join(voice_folder, mp3_file)
+            audio.export(output_file + "-tmp", parameters=["-qscale:a", "3"])
+            shutil.move(output_file+"-tmp", output_file)
             os.remove(wav_file)
 
 
