@@ -25,8 +25,8 @@ from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 warnings.filterwarnings("ignore", category=UserWarning)
 
 dest_folder: str = "samples.animals"
-
-model_id:str = "Cherokee_West"
+model_id: str = "Cherokee_West"
+MP3_HAZ: int = 22050
 
 
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
@@ -59,14 +59,14 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             dest_speaker_mp3: str = (os.path.join(dest_folder, "ref-" + speaker_ref))[:-3] + "mp3"
             if not os.path.exists(dest_speaker_mp3):
                 audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
-                audio.export(dest_speaker_mp3, parameters=["-qscale:a", "3"])
+                audio.set_frame_rate(MP3_HZ).export(dest_speaker_mp3, parameters=["-qscale:a", "3"])
             tts.set_utterance_embedding(path_speaker_ref)
             voice_folder: str = os.path.join(dest_folder, f"{speaker_ref[:-4]}")
             os.makedirs(voice_folder, exist_ok=True)
             wav_file = os.path.join(voice_folder, f"{mp3_file}.wav")
             tts.read_to_file([pronounce], wav_file, silent=True)
             audio: AudioSegment = AudioSegment.from_file(wav_file)
-            audio.export(os.path.join(voice_folder, mp3_file), parameters=["-qscale:a", "3"])
+            audio.set_frame_rate(MP3_HZ).export(os.path.join(voice_folder, mp3_file), parameters=["-qscale:a", "3"])
             os.remove(wav_file)
 
 

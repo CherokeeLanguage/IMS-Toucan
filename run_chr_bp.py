@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 dest_folder: str = "samples.bound-pronouns-app"
 
 model_id:str = "Cherokee_West"
-
+MP3_HZ: int = 22050
 IX_CHEROKEE: int = 7
 IX_ENGLISH: int = 8
 IX_FILE_NAME: int = 11
@@ -72,7 +72,7 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             dest_speaker_mp3: str = os.path.join(dest_folder, "ref-" + speaker_ref)[:-3] + "mp3"
             if not os.path.exists(dest_speaker_mp3):
                 audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
-                audio.export(dest_speaker_mp3, parameters=["-qscale:a", "3"])
+                audio.set_frame_rate(MP3_HZ).export(dest_speaker_mp3, parameters=["-qscale:a", "3"])
             tts.set_utterance_embedding(path_speaker_ref)
             voice_folder: str = os.path.join(dest_folder, f"{speaker_ref[:-4]}")
             os.makedirs(voice_folder, exist_ok=True)
@@ -80,7 +80,7 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
             tts.read_to_file([pronounce], wav_file, silent=True)
             audio: AudioSegment = AudioSegment.from_file(wav_file)
             output_file: str = os.path.join(voice_folder, mp3_file)
-            audio.export(output_file + "-tmp", parameters=["-qscale:a", "3"])
+            audio.set_frame_rate(MP3_HZ).export(output_file + "-tmp", parameters=["-qscale:a", "3"])
             shutil.move(output_file+"-tmp", output_file)
             os.remove(wav_file)
 

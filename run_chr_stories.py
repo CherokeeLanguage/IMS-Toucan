@@ -15,6 +15,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 dest_folder: str = "samples.stories"
 
+MP3_HZ: int = 22050
+
 
 def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str, text: str):
     text = textwrap.dedent(text)
@@ -32,13 +34,13 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], file_prefix: str
         dest_speaker_mp3: str = (os.path.join(dest_folder, "z_ref-" + speaker_ref))[:-3] + "mp3"
         if not os.path.exists(dest_speaker_mp3):
             audio: AudioSegment = AudioSegment.from_file(path_speaker_ref)
-            audio.export(dest_speaker_mp3)
+            audio.set_frame_rate(MP3_HZ).export(dest_speaker_mp3)
         tts.set_utterance_embedding(path_speaker_ref)
         file_location = os.path.join(dest_folder, f"{file_prefix}-{speaker_ref}")
         tts.read_to_file(texts, file_location, silent=True)
         audio: AudioSegment = AudioSegment.from_file(file_location)
         mp3_file = file_location[:-3] + "mp3"
-        audio.export(mp3_file)
+        audio.set_frame_rate(MP3_HZ).export(mp3_file)
         os.remove(file_location)
 
 
