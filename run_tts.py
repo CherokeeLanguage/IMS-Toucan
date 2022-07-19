@@ -29,6 +29,9 @@ def main():
     parser.add_argument("--ref", type=str, help="Path to reference WAV audio for voice.", required=False, default=None)
     parser.add_argument("--mp3", type=str, help="Output mp3 file.", required=True)
     parser.add_argument("--text", type=str, help="The text to process to create the TTS output.", required=True)
+    parser.add_argument("--alpha", type=float, help="Speech duration multiplier. 1.0 is normal speed.",
+                        required=True,
+                        default=1.0)
     args = parser.parse_args()
 
     output_file = os.path.realpath(args.mp3)
@@ -38,12 +41,18 @@ def main():
         ref_file = None
     text: str = args.text
 
+    alpha: float
+    if args.alpha:
+        alpha = args.alpha
+    else:
+        alpha = 1.0
+
     work_dir = os.getcwd()
     my_dir = pathlib.Path(__file__).parent.absolute()
     os.chdir(my_dir)
     model_id = "Cherokee_West"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=alpha)
     os.chdir(work_dir)
     tts.set_language(args.lang)
     if args.ref:

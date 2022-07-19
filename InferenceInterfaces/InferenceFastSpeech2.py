@@ -17,20 +17,24 @@ from Preprocessing.ProsodicConditionExtractor import ProsodicConditionExtractor
 
 class InferenceFastSpeech2(torch.nn.Module):
 
-    def __init__(self, device="cpu", model_name="Meta", language="en", noise_reduce=False):
+    def __init__(self, device="cpu", model_name="Meta", language="en", noise_reduce=False, alpha: float = 1.0):
         super().__init__()
+        self.alpha: float = alpha
         self.device = device
         self.text2phone = ArticulatoryCombinedTextFrontend(language=language, add_silence_to_end=True)
         checkpoint = torch.load(os.path.join("Models", f"FastSpeech2_{model_name}", "best.pt"), map_location='cpu')
         self.use_lang_id = True
         try:
-            self.phone2mel = FastSpeech2(weights=checkpoint["model"]).to(torch.device(device))  # multi speaker multi language
+            self.phone2mel = FastSpeech2(weights=checkpoint["model"], alpha=alpha) \
+                .to(torch.device(device))  # multi speaker multi language
         except RuntimeError:
             try:
                 self.use_lang_id = False
-                self.phone2mel = FastSpeech2(weights=checkpoint["model"], lang_embs=None).to(torch.device(device))  # multi speaker single language
+                self.phone2mel = FastSpeech2(weights=checkpoint["model"], lang_embs=None, alpha=alpha) \
+                    .to(torch.device(device))  # multi speaker single language
             except RuntimeError:
-                self.phone2mel = FastSpeech2(weights=checkpoint["model"], lang_embs=None, utt_embed_dim=None).to(torch.device(device))  # single speaker
+                self.phone2mel = FastSpeech2(weights=checkpoint["model"], lang_embs=None, utt_embed_dim=None, alpha=alpha) \
+                    .to(torch.device(device))  # single speaker
         self.mel2wav = HiFiGANGenerator(path_to_weights=os.path.join("Models", "HiFiGAN_combined", "best.pt")).to(torch.device(device))
         self.default_utterance_embedding = checkpoint["default_emb"].to(self.device)
         self.phone2mel.eval()

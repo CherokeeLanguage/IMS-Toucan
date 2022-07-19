@@ -19,6 +19,7 @@ from typing import List
 
 import torch
 from pydub import AudioSegment
+from tqdm import tqdm
 
 from InferenceInterfaces.InferenceFastSpeech2 import InferenceFastSpeech2
 
@@ -46,16 +47,16 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
 
     for speaker_ref in speaker_refs:
         print(f"-{speaker_ref}")
-        for line in lines:
+        for line in tqdm(lines):
             parts: List[str] = line.split("|")
-            syllabary:str = parts[0]
-            pronounce:str = unicodedata.normalize("NFC", parts[1])
+            syllabary: str = parts[0]
+            pronounce: str = unicodedata.normalize("NFC", parts[1])
             # punct: str = ""
             # if pronounce[-1] == "." or pronounce[-1] == "?" or pronounce[-1] == "!":
             #     punct = pronounce[-1]
             #     pronounce = pronounce[:-1]
             # pronounce = pronounce + "\u02d0" + punct
-            mp3_file:str = parts[2]
+            mp3_file: str = parts[2]
             path_speaker_ref: str = os.path.join("ref", speaker_ref)
             dest_speaker_mp3: str = (os.path.join(dest_folder, "ref-" + speaker_ref))[:-3] + "mp3"
             if not os.path.exists(dest_speaker_mp3):
@@ -74,7 +75,7 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
 def main():
     text: str
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.2)
     tts.set_language("chr")
     shutil.rmtree(dest_folder, ignore_errors=True)
     os.mkdir(dest_folder)

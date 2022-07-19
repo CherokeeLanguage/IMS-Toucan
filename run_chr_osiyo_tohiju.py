@@ -73,7 +73,7 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
 def main():
     text: str
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.3)
     tts.set_language("chr")
     shutil.rmtree(dest_folder, ignore_errors=True)
     os.mkdir(dest_folder)

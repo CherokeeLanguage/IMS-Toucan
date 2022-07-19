@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 dest_folder: str = "samples.bound-pronouns-app"
 
 model_id:str = "Cherokee_West"
-MP3_HZ: int = 22050
+MP3_HZ: int = 48_000
 IX_CHEROKEE: int = 7
 IX_ENGLISH: int = 8
 IX_FILE_NAME: int = 11
@@ -88,14 +88,14 @@ def run_tts(tts: InferenceFastSpeech2, speaker_refs: List[str], text_file: str):
 def main():
     text: str
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.3)
     tts.set_language("chr")
     shutil.rmtree(dest_folder, ignore_errors=True)
     os.mkdir(dest_folder)
     speaker_refs: List[str] = list()
     for file in os.listdir("ref"):
         speaker_refs.append(file)
-    text_file: str = os.path.expanduser("~/git/audio-lessons-generator-python/bound-pronouns.txt")
+    text_file: str = os.path.expanduser("~/git/audio-lessons-generator-python/data/bound-pronouns.txt")
     run_tts(tts, speaker_refs, text_file)
 
 

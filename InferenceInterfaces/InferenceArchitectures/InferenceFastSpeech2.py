@@ -74,7 +74,8 @@ class FastSpeech2(torch.nn.Module, ABC):
                  # additional features
                  utt_embed_dim=704,
                  connect_utt_emb_at_encoder_out=True,
-                 lang_embs=100):
+                 lang_embs=100,
+                 alpha: float = 1.0):
         super().__init__()
         self.idim = idim
         self.odim = odim
@@ -84,6 +85,7 @@ class FastSpeech2(torch.nn.Module, ABC):
         self.use_scaled_pos_enc = use_scaled_pos_enc
         self.multilingual_model = lang_embs is not None
         self.multispeaker_model = utt_embed_dim is not None
+        self.alpha: float = alpha
 
         embed = torch.nn.Sequential(torch.nn.Linear(idim, 100),
                                     torch.nn.Tanh(),
@@ -144,6 +146,9 @@ class FastSpeech2(torch.nn.Module, ABC):
     def _forward(self, text_tensors, text_lens, gold_speech=None, speech_lens=None,
                  gold_durations=None, gold_pitch=None, gold_energy=None,
                  is_inference=False, alpha=1.0, utterance_embedding=None, lang_ids=None):
+
+        if self.alpha:
+            alpha = self.alpha
 
         if not self.multilingual_model:
             lang_ids = None

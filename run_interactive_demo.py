@@ -16,13 +16,18 @@ if __name__ == '__main__':
             available_fastspeech_models.append(model.lstrip("FastSpeech_2"))
     model_id = input("Which model do you want? \nCurrently supported are: {}\n".format("".join("\n\t- {}".format(key) for key in available_fastspeech_models)))
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.4)
     tts.set_language(lang_id=input("Which Language?\n"))
     while True:
-        text = input("\nWhat should I say? (or 'exit')\n")
+        try:
+            text = input("\nWhat should I say? (or 'exit')\n")
+        except EOFError as e:
+            sys.exit()
+
         if text == "exit":
             sys.exit()
-        tts.read_aloud(text, view=True, blocking=True)
-        file_location = f"{int(datetime.datetime.today().timestamp() * 1000)}.wav"
-        tts.read_to_file([text], file_location)
+        if text:
+            tts.read_aloud(text, view=True, blocking=True)
+            file_location = f"{int(datetime.datetime.today().timestamp() * 1000)}.wav"
+            tts.read_to_file([text], file_location)
 
