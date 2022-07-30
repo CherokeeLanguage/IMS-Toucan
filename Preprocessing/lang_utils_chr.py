@@ -18,9 +18,14 @@ def chr_mco_ipa(mco_text: str) -> str:
     # decompose combined diacritics for simplified conversion to IPA tone letters
     mco_text = mco_text.lower()
     mco_text = un.normalize("NFD", mco_text)
-    mco_text = re.sub("\\s+", " ", mco_text)  # normalize spacing
-    mco_text = re.sub(":([^\\s])", "\u02d0\\1", mco_text)  # convert intra-word colons into IPA long vowel letters
-    mco_text = mco_text.replace("ch", "tʃ")  # a one-off multi-char convert
+    # Ensure consistent handling of glottal stop variations
+    mco_text = re.sub("[\u02c0\u0241\u0242]", "\u0294", mco_text)
+    # Normalize spacing
+    mco_text = re.sub("\\s+", " ", mco_text)
+    # Convert intra-word colons into IPA long vowel letters
+    mco_text = re.sub(":([^\\s])", "\u02d0\\1", mco_text)
+    # A special one-off multi-char convert
+    mco_text = mco_text.replace("ch", "tʃ")
     for ch in mco_text:
         if ch in lookup:
             ipa_text += lookup[ch]
@@ -39,7 +44,9 @@ def get_mco_lookup_dict() -> Dict[str, str]:
     lookup["\u0302"] = "\u02e7\u02e8"  # ˧˨ falling tone, combining circumflex accent
     lookup["\u0301"] = "\u02e7"  # ˧ high tone, combining acute accent
     lookup["\u030b"] = "\u02e7\u02e6"  # ˧˦ superhigh (high rising tone), combining double acute accent
-    lookup["ɂ"] = "ʔ"
+    lookup["\u02c0"] = "\u0294"  # ʔ Unicase Glottal Stop
+    lookup["\u0241"] = "\u0294"  # ʔ Unicase Glottal Stop
+    lookup["\u0242"] = "\u0294"  # ʔ Unicase Glottal Stop
     lookup["v"] = "ə̃"
     lookup["j"] = "dʒ"
     lookup["y"] = "j"
