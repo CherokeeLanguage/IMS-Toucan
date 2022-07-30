@@ -16,7 +16,7 @@ if __name__ == '__main__':
             available_fastspeech_models.append(model.lstrip("FastSpeech_2"))
     model_id = input("Which model do you want? \nCurrently supported are: {}\n".format("".join("\n\t- {}".format(key) for key in available_fastspeech_models)))
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.4)
+    tts = InferenceFastSpeech2(device=device, model_name=model_id, alpha=1.3)
     tts.set_language(lang_id=input("Which Language?\n"))
     while True:
         try:
