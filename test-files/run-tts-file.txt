@@ -1,0 +1,9 @@
+
+
+chr|gadō ű:sdi?|../ref-other/01-de.wav|gado_usdi.mp3
+en|Which one?|../ref-other/01-de.wav|which_one_default.mp3
+chr|gadō ű:sdi?||gado_usdi_default.mp3
+en|Which one?|../ref-other/01-de.wav|which_one.mp3
+chr|Taʔli:ne̋:ʔi Jalagi go:hwe:lv̋:ʔi.|../ref-other/01-fr.wav|mp3/talinei_jalagi_gohwelvi.mp3
+en|Second Cherokee Lesson.|../ref-other/01-fr.wav|mp3/second_cherokee_lesson.mp3
+
